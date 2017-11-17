@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MCC Scanner</string>
+    <string name="excel_extension">xlsx</string>
+    <string name="admin_header_label">MCC Scanner: Results (Admin)</string>
+    <string name="acad_header_label">MCC Scanner: Results (Academic)</string>
+    <string name="error_header_label">MCC Scanner: Error</string>
+    <string name="settings_button">Set File Location</string>
+    <string name="scan_button">Scan</string>
+    <string name="return_button">Try Again</string>
+    <string name="level_and_usage">%1$s : : %2$s</string>
+
+    <string name="pref_title_excel_file">Excel File Location</string>
+    <string name="pref_summary_excel_file">%s</string>
+
+    <string name="pref_title_first_run">First Time Running App</string>
+    <string name="settings">settings fragment</string>
+</resources>

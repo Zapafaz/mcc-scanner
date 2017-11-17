@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/acad_table_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="edu.mccnh.mccscanner.activities.AcadInfoActivity"
+    >
+
+    <TableRow
+        android:id="@+id/acad_labels_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/acad_header_room_area"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="0dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp"
+            android:text="Room/Area"
+            android:textColor="#444444"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/acad_header_comp_count"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="0dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp"
+            android:text="Comp Count"
+            android:textColor="#444444"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/acad_header_level_and_usage"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="0dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp"
+            android:text="Lvl : : Usage"
+            android:textColor="#444444"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/acad_header_comp_age"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="0dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp"
+            android:text="Comp Age"
+            android:textColor="#444444"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/acad_details_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/acad_room_area"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:text="ROOM"
+            android:textColor="#444444"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/acad_comp_count"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:text="COUNT"
+            android:textColor="#444444"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/acad_level_and_usage"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:text="LVL : : USAGE"
+            android:textColor="#444444"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/acad_comp_age"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:text="AGE"
+            android:textColor="#444444"
+            android:textSize="12sp"/>
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/acad_labels_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/acad_header_date_purchased"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="0dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp"
+            android:text="Purchased"
+            android:textColor="#444444"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/acad_header_warranty"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="0dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp"
+            android:text="Warranty"
+            android:textColor="#444444"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/acad_header_model"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_span="2"
+            android:gravity="center"
+            android:paddingBottom="0dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp"
+            android:text="Model"
+            android:textColor="#444444"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/acad_details_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/acad_date_purchased"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:text="PURCHASED"
+            android:textColor="#444444"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/acad_warranty"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:text="WARRANTY"
+            android:textColor="#444444"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/acad_model"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_span="2"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:text="MODEL"
+            android:textColor="#444444"
+            android:textSize="12sp"/>
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/acad_labels_notes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/acad_header_notes"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_span="4"
+            android:gravity="center"
+            android:paddingBottom="0dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp"
+            android:text="Notes"
+            android:textColor="#444444"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/acad_details_notes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/acad_notes"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_span="4"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:text="NOTES"
+            android:textColor="#444444"
+            android:textSize="12sp"/>
+
+    </TableRow>
+
+</TableLayout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="false"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context="edu.mccnh.mccscanner.activities.MainActivity">
+
+    <TextView
+        android:id="@+id/button_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:onClick="onScanClick"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:text="@string/scan_button"
+        android:textColor="#fff"/>
+
+    <TextView
+        android:id="@+id/button_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:onClick="onSettingsClick"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:text="@string/settings_button"
+        android:textColor="#fff"/>
+
+</LinearLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.github.angads25.filepicker.view.FilePickerPreference
+        android:key="pref_excel_file"
+        android:title="@string/pref_title_excel_file"
+        android:summary="@string/pref_summary_excel_file"
+        android:defaultValue="/sdcard:/mnt"
+        app:offset_dir="/mnt/sdcard/download"
+        app:error_dir="/mnt"
+        app:root_dir="/sdcard"
+        app:selection_mode="single_mode"
+        app:selection_type="file_select"
+        app:extensions="xlsx:"/>
+    <CheckBoxPreference
+        android:key="pref_first_run"
+        android:title="@string/pref_title_first_run"
+        android:enabled="false"
+        android:defaultValue="true"/>
+</PreferenceScreen>
