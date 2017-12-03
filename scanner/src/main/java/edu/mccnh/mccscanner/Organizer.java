@@ -21,14 +21,12 @@ public class Organizer
 
         switch (rawComputerData.length)
         {
+            // Admin side has no ignored columns
             case Utility.ADMIN_RAW_SIZE:
-                orderedData = new String[Utility.ADMIN_ORDERED_SIZE];
-                ignoredIndexes = Utility.ADMIN_IGNORED;
-                validSize = true;
-                break;
+                return rawComputerData;
             case Utility.ACAD_RAW_SIZE:
                 orderedData = new String[Utility.ACAD_ORDERED_SIZE];
-                ignoredIndexes = Utility.ACAD_IGNORED;
+                ignoredIndexes = Utility.ACAD_IGNORED_COLS;
                 validSize = true;
                 break;
             default:

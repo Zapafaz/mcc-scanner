@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.github.angads25.filepicker.view.FilePickerPreference;
 
 import edu.mccnh.mccscanner.R;
+import edu.mccnh.mccscanner.Utility;
 
 /**
  * A simple Fragment subclass.
@@ -94,7 +95,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onActivityCreated(savedInstanceState);
         Context host = getActivity();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(host);
-        excelFilePref.setSummary(prefs.getString(MainActivity.KEY_PREF_PATH, ""));
+        excelFilePref.setSummary(Utility.stripColon(prefs.getString(MainActivity.KEY_PREF_PATH, "")));
     }
 
     @Override
@@ -103,7 +104,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         switch (key)
         {
             case MainActivity.KEY_PREF_PATH:
-                excelFilePref.setSummary(sharedPreferences.getString(MainActivity.KEY_PREF_PATH, ""));
+                excelFilePref.setSummary(Utility.stripColon(sharedPreferences.getString(MainActivity.KEY_PREF_PATH, "")));
                 break;
             default:
                 break;

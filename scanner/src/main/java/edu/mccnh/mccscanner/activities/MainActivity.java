@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -39,11 +38,11 @@ import edu.mccnh.mccscanner.Utility;
  * Instructor: Adnan Tahir
  */
 
-public class MainActivity extends AppCompatActivity implements Preference.OnPreferenceChangeListener, SettingsFragment.OnFragmentInteractionListener
+public class MainActivity extends AppCompatActivity implements SettingsFragment.OnFragmentInteractionListener, SharedPreferences.OnSharedPreferenceChangeListener
 {
 
     // Control flow: checkPermissionReadStorage -> onRequestPermissionResult -> checkPermissionCamera -> onRequestPermissionResult -> (continued)...
-    // startScan -> (scanning activity) -> onActivityResult -> displayInfo -> (next activity: DisplayAdmin/AcadInfoActivity)
+    // startScan -> (scanning activity) -> onActivityResult -> displayInfo -> (next activity: Display(Admin/Acad)InfoActivity)
     // Any errors along the way get sent to displayError
 
     final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 0;
@@ -54,7 +53,10 @@ public class MainActivity extends AppCompatActivity implements Preference.OnPref
     public static final String EXTRA_ERROR_DISPLAY = "edu.mccnh.mccscanner.EXTRA_ERROR_DISPLAY";
     public static final String KEY_PREF_PATH = "pref_excel_file";
     public static final String KEY_PREF_FIRST = "pref_first_run";
-    private static String excelPath = null;
+    public static final int STRING_ARRAY_ERROR = 2;
+
+    // This ugly global variable is so the app doesn't have to re-load the whole workbook into memory with every scan
+    public static Workbook currentWorkbook = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements Preference.OnPref
         System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
         System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
         System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
+
+        // Set default preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         // On startup, check if it's first time running app; if so, show settings
@@ -112,9 +116,7 @@ public class MainActivity extends AppCompatActivity implements Preference.OnPref
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String path = prefs.getString(KEY_PREF_PATH, "");
-        path = Utility.stripColon(path);
+        String path  = getKeyPrefPath();
         if (scanResult != null)
         {
             String qrCode = scanResult.getContents();
@@ -125,19 +127,16 @@ public class MainActivity extends AppCompatActivity implements Preference.OnPref
             {
                 try
                 {
-                    InputStream inputStream = new FileInputStream(path);
-                    Workbook workbook = WorkbookFactory.create(inputStream);
-                    String[] rawComputerInfo = ExcelParsing.getRawComputerInfo(qrCode, workbook);
-                    inputStream.close();
-                    workbook.close();
-                    if (rawComputerInfo.length == 2)
+                    loadWorkbook(path);
+                    String[] rawComputerInfo = ExcelParsing.getRawComputerInfo(qrCode, currentWorkbook);
+                    if (rawComputerInfo.length == STRING_ARRAY_ERROR)
                     {
                         displayError(rawComputerInfo[0], rawComputerInfo[1]);
                     }
                     else
                     {
                         String[] orderedInfo = Organizer.OrderRawComputerInfo(rawComputerInfo);
-                        if (orderedInfo.length == 2)
+                        if (orderedInfo.length == STRING_ARRAY_ERROR)
                         {
                             displayError(orderedInfo[0], orderedInfo[1]);
                         }
@@ -162,24 +161,24 @@ public class MainActivity extends AppCompatActivity implements Preference.OnPref
         }
     }
 
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object o)
+    // Loads the file -> workbook from the given path into a static variable (memory) so it can be used for multiple scans
+    private void loadWorkbook(String path)
+            throws IOException, InvalidFormatException, EncryptedDocumentException
     {
-        switch (preference.getKey())
+        if (currentWorkbook == null)
         {
-            case KEY_PREF_PATH:
-                excelPath = (String)o;
-                break;
-            default:
-                break;
+            InputStream stream = new FileInputStream(path);
+            currentWorkbook = WorkbookFactory.create(stream);
         }
-        return false;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri)
+    // Load the excel file path from shared preferences
+    private String getKeyPrefPath()
     {
-
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String path = prefs.getString(KEY_PREF_PATH, "");
+        path = Utility.stripColon(path);
+        return path;
     }
 
     // Find excel file at given location.
@@ -224,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements Preference.OnPref
         showSettings();
     }
 
+    // Shows the settings fragment so user can change excel file location
     public void showSettings()
     {
         getFragmentManager()
@@ -330,5 +330,18 @@ public class MainActivity extends AppCompatActivity implements Preference.OnPref
         Intent intent = new Intent(this, ErrorActivity.class);
         intent.putExtra(EXTRA_ERROR_DISPLAY, new String[] {tag, error});
         startActivity(intent);
+    }
+
+    // I think these are required for fragment to work but they are not used at the moment
+    @Override
+    public void onFragmentInteraction(Uri uri)
+    {
+
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+    {
+
     }
 }

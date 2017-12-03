@@ -18,6 +18,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 public class ExcelParsing
 {
+    private static final int NO_ID_COLUMN = -5;
+    private static final int UNSET_COLUMN_ID = -1;
+
+    // These are used to store ID column location so each scan doesn't have to relocate it
+    private static int acadIdColumn = UNSET_COLUMN_ID;
+    private static int adminIdColumn = UNSET_COLUMN_ID;
+
     // Take numeric QR code (as string) and decipher it to get the needed data from the workbook.
     // First character in string: Type of PC (Academic or Admin)
     // Rest of string: unique ID# for that PC
@@ -99,14 +106,15 @@ public class ExcelParsing
         }
         if (sheetFound)
         {
-            idColumn = findIdColumn(sheet);
-            if (idColumn == -1)
+            idColumn = findIdColumn(sheet, sheetId);
+            if (idColumn == NO_ID_COLUMN)
             {
                 errorTag = "NO_ID_COLUMN";
-                errorString = "Could not find the ID code column (column starting with" + Utility.ID_COL_INDICATOR + ") in sheet:" + sheet.getSheetName();
+                errorString = "Could not find the ID code column (column starting with" + Utility.ID_COL_INDICATOR + " (unicode code point: U+2611)) in sheet:" + sheet.getSheetName();
             }
             else
             {
+                // Iterates over every row rather than starting at the ID/header row, just in case - should only be a few extra rows, anyway...
                 for (Row row : sheet)
                 {
                     Cell idCell = row.getCell(idColumn);
@@ -131,20 +139,40 @@ public class ExcelParsing
         return new String[] { errorTag, errorString };
     }
 
-    // Finds the ID column by looking for its header.
-    private static int findIdColumn(Sheet sheet)
+    // Finds the ID column by looking for its header, or returns it from memory if it was previously found.
+    private static int findIdColumn(Sheet sheet, int sheetId)
     {
+        // Return previously found ID column location if it exists
+        if (sheetId == Utility.ADMIN_SHEET && adminIdColumn != UNSET_COLUMN_ID)
+        {
+            return adminIdColumn;
+        }
+        else if (sheetId == Utility.ACAD_SHEET && acadIdColumn != UNSET_COLUMN_ID)
+        {
+            return acadIdColumn;
+        }
+
         for (Row row : sheet)
         {
             for (Cell cell : row)
             {
                 if (isIdColumnHeader(cell))
                 {
-                    return cell.getColumnIndex();
+                    int index = cell.getColumnIndex();
+                    // Remember ID column location for future scans
+                    if (sheetId == Utility.ADMIN_SHEET && adminIdColumn == UNSET_COLUMN_ID)
+                    {
+                        adminIdColumn = index;
+                    }
+                    else if (sheetId == Utility.ACAD_SHEET && acadIdColumn == UNSET_COLUMN_ID)
+                    {
+                        acadIdColumn = index;
+                    }
+                    return index;
                 }
             }
         }
-        return -1;
+        return NO_ID_COLUMN;
     }
 
     // Check if the given cell is the ID column header by checking if it's first character is \u2611 (☑, ballot box with check)

@@ -8,15 +8,8 @@ package edu.mccnh.mccscanner.datastorage;
 
 public class AdminComputerInfo extends ComputerInfo
 {
-    // Admin side is Sheet #1, 0 if 0-indexed
-    // Total number of columns is 15 after throwing away unwanted/unused columns.
-    // Total number of columns with unwanted/ignored columns is  19.
     // Ignored columns:
-    // Age of the PC
-    // Number of Monitors
-    // Monitor Sizes
-    // Phone Extension
-    // Phone Type (12 or 6 Buttons)
+    // NONE
 
     // Raw columns:
     // 0 Last Name
@@ -31,12 +24,12 @@ public class AdminComputerInfo extends ComputerInfo
     // 9 Age of the PC
     // 10 Usage Scale (1-3)
     // 11 Warranty Status
-    // 12 Number of Monitors (IGNORED)
-    // 13 Monitor Size(s) (IGNORED)
+    // 12 Number of Monitors
+    // 13 Monitor Size(s)
     // 14 MAC Address (Wired)
     // 15 MAC Address (Wireless)
-    // 16 Phone Extension (IGNORED)
-    // 17 Phone Type (12 or 6 Buttons) (IGNORED)
+    // 16 Phone Extension
+    // 17 Phone Type (12 or 6 Buttons)
     // 18 Re-Imaged
     // 19 Notes
 

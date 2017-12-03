@@ -12,6 +12,7 @@ import java.io.File;
 
 public class Utility
 {
+    // Various constants
     static final String ID_COL_INDICATOR = "\u2611";
     static final int ADMIN_SHEET = 0;
     static final int ACAD_SHEET = 1;
@@ -19,8 +20,8 @@ public class Utility
     static final int ACAD_RAW_SIZE = 14;
     public static final int ADMIN_ORDERED_SIZE = 16;
     public static final int ACAD_ORDERED_SIZE = 9;
-    static final int[] ADMIN_IGNORED = new int[]{ 12, 13, 16, 17};
-    static final int[] ACAD_IGNORED = new int[]{ 0, 9, 10, 11, 12};
+    static final int[] ADMIN_IGNORED_COLS = null;
+    static final int[] ACAD_IGNORED_COLS = new int[]{ 0, 9, 10, 11, 12};
 
     // Gets the file extension for a given file.
     public static String getFileExtension(File file)
