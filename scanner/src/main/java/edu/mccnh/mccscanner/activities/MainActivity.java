@@ -50,10 +50,12 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     final int PERMISSION_REQUEST_RATIONALE_CODE_READ_EXTERNAL_STORAGE = 2;
     final int PERMISSION_REQUEST_RATIONALE_CODE_CAMERA = 3;
     public static final String EXTRA_ORDERED_DATA = "edu.mccnh.mccscanner.EXTRA_ORDERED_DATA";
+    public static final String EXTRA_ID_CODE = "edu.mccnh.mccscanner.EXTRA_ID_CODE";
     public static final String EXTRA_ERROR_DISPLAY = "edu.mccnh.mccscanner.EXTRA_ERROR_DISPLAY";
     public static final String KEY_PREF_PATH = "pref_excel_file";
     public static final String KEY_PREF_FIRST = "pref_first_run";
     public static final int STRING_ARRAY_ERROR = 2;
+    public static final int VALID_CODES = 2;
 
     // This ugly global variable is so the app doesn't have to re-load the whole workbook into memory with every scan
     public static Workbook currentWorkbook = null;
@@ -127,8 +129,14 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             {
                 try
                 {
+                    int[] codes = decipherQrCode(qrCode);
+                    if (codes == null || codes.length < VALID_CODES)
+                    {
+                        displayError("INVALID_QR_CODE", "No valid QR code was found");
+                    }
+
                     loadWorkbook(path);
-                    String[] rawComputerInfo = ExcelParsing.getRawComputerInfo(qrCode, currentWorkbook);
+                    String[] rawComputerInfo = ExcelParsing.getRawComputerInfo(codes, currentWorkbook);
                     if (rawComputerInfo.length == STRING_ARRAY_ERROR)
                     {
                         displayError(rawComputerInfo[0], rawComputerInfo[1]);
@@ -142,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
                         }
                         else
                         {
-                            displayInfo(orderedInfo);
+                            displayInfo(orderedInfo, codes);
                         }
                     }
                 } catch (IOException | InvalidFormatException | EncryptedDocumentException e)
@@ -170,6 +178,34 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             InputStream stream = new FileInputStream(path);
             currentWorkbook = WorkbookFactory.create(stream);
         }
+    }
+    // Parse QR code into an int array: index 0 is the type of PC (admin or academic), index 1 is the rest of the QR code (i.e. the ID code for the pc)
+    private static int[] decipherQrCode(String qrCode)
+    {
+        if (qrCode == null || qrCode.length() < 5)
+        {
+            return null;
+        }
+        int[] codes = new int[2];
+        try
+        {
+            int temp = Integer.parseInt(qrCode.trim());
+            if (temp < 20000 && temp >= 10000)
+            {
+                codes[0] = Utility.ADMIN_SHEET;
+            }
+            else if (temp < 60000 && temp >= 50000)
+            {
+                codes[0] = Utility.ACAD_SHEET;
+            }
+            codes[1] = temp;
+        }
+        catch (NumberFormatException e)
+        {
+            Log.d(e.getClass().getCanonicalName(), "decipherQrCode: " + e.getLocalizedMessage());
+            return null;
+        }
+        return codes;
     }
 
     // Load the excel file path from shared preferences
@@ -233,15 +269,15 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     }
 
     // Sends ordered computer info to next activity where it can be displayed
-    private void displayInfo(String[] orderedComputerInfo)
+    private void displayInfo(String[] orderedComputerInfo, int[] codes)
     {
         Intent intent = null;
-        if (orderedComputerInfo.length == Utility.ADMIN_ORDERED_SIZE)
+        if (codes[0] == Utility.ADMIN_SHEET)
         {
             intent = new Intent(this, AdminInfoActivity.class);
 
         }
-        else if (orderedComputerInfo.length == Utility.ACAD_ORDERED_SIZE)
+        else if (codes[1] == Utility.ACAD_SHEET)
         {
             intent = new Intent( this, AcadInfoActivity.class);
         }
@@ -252,6 +288,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         if (intent != null)
         {
             intent.putExtra(EXTRA_ORDERED_DATA, orderedComputerInfo);
+            intent.putExtra(EXTRA_ID_CODE, codes[1]);
             startActivity(intent);
         }
     }

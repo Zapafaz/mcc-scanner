@@ -20,25 +20,23 @@ public class ExcelParsing
 {
     private static final int NO_ID_COLUMN = -5;
     private static final int UNSET_COLUMN_ID = -1;
+    public static final int NO_ID_CODE = -4;
 
     // These are used to store ID column location so each scan doesn't have to relocate it
     private static int acadIdColumn = UNSET_COLUMN_ID;
     private static int adminIdColumn = UNSET_COLUMN_ID;
 
-    // Take numeric QR code (as string) and decipher it to get the needed data from the workbook.
-    // First character in string: Type of PC (Academic or Admin)
-    // Rest of string: unique ID# for that PC
-    public static String[] getRawComputerInfo(String qrCode, Workbook workbook)
+    // Take id codes and parse workbook to get raw data
+    public static String[] getRawComputerInfo(int[] codes, Workbook workbook)
             throws NumberFormatException
     {
         String errorString;
         String errorTag;
-        int[] codes = decipherQrCode(qrCode);
         String[] rawInfo;
         if (codes == null || codes.length < 2)
         {
             errorTag = "INVALID_QR_CODE";
-            errorString = "No QR code was found";
+            errorString = "No valid QR code was found";
             rawInfo = new String[] {errorTag, errorString};
         }
         else
@@ -216,33 +214,5 @@ public class ExcelParsing
     private static boolean isValidIdCode(int idCode)
     {
         return ((idCode < 20000 && idCode >= 10000) || (idCode < 60000 && idCode >= 50000));
-    }
-
-    // Parse QR code into an int array: index 0 is the type of PC (admin or academic), index 1 is the rest of the QR code (i.e. the ID code for the pc)
-    private static int[] decipherQrCode(String qrCode)
-    {
-        if (qrCode == null || qrCode.length() < 1)
-        {
-            return null;
-        }
-        int[] codes = new int[2];
-        try
-        {
-            int temp = Integer.parseInt(qrCode.trim());
-            if (temp < 20000 && temp >= 10000)
-            {
-                codes[0] = Utility.ADMIN_SHEET;
-            }
-            else if (temp < 60000 && temp >= 50000)
-            {
-                codes[0] = Utility.ACAD_SHEET;
-            }
-            codes[1] = temp;
-        }
-        catch (NumberFormatException e)
-        {
-            Log.d(e.getClass().getCanonicalName(), e.getLocalizedMessage());
-        }
-        return codes;
     }
 }

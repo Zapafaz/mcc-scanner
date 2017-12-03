@@ -1,541 +1,764 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TableLayout
-    android:id="@+id/admin_table_layout"
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/admin_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="edu.mccnh.mccscanner.activities.AdminInfoActivity"
+    android:fillViewport="true"
     >
 
-    <TableRow
-        android:id="@+id/admin_labels_1"
+    <TableLayout
+        android:id="@+id/admin_table_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:visibility="visible">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:stretchColumns="*"
+        tools:context="edu.mccnh.mccscanner.activities.AdminInfoActivity"
+        >
 
-        <TextView
-            android:id="@+id/admin_header_last_name"
-            android:layout_width="95dp"
+        <TableRow
+            android:id="@+id/admin_labels_1"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="Last Name"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+            android:orientation="horizontal"
+            android:visibility="visible">
 
-        <TextView
-            android:id="@+id/admin_header_first_name"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_header_last_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Last Name"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/admin_header_first_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="First Name"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/admin_header_dept"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Department"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_details_1"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="First Name"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/admin_header_dept"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_last_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="LAST"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/admin_first_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="FIRST"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/admin_department"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="DEPARTMENT"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_labels_2"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="Department"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+            android:orientation="horizontal"
+            android:visibility="visible">
 
-        <TextView
-            android:id="@+id/admin_header_computer_name"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_header_computer_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Comp Name"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/admin_header_model"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Model"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/admin_header_serial_num"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Serial"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_details_2"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="Comp Name"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
-    </TableRow>
+            android:orientation="vertical">
 
-    <TableRow
-        android:id="@+id/admin_details_1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+            <TextView
+                android:id="@+id/admin_computer_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="COMP NAME"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
 
-        <TextView
-            android:id="@+id/admin_last_name"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_model"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="MODEL"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/admin_serial_num"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="SERIAL"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_labels_3"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="LAST"
-            android:textColor="#444444"
-            android:textSize="12sp"/>
+            android:orientation="horizontal"
+            android:visibility="visible">
 
-        <TextView
-            android:id="@+id/admin_first_name"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_header_date_purchased"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Purchased"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/admin_header_warranty"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Warranty"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/admin_header_comp_age"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Comp Age"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_details_3"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="FIRST"
-            android:textColor="#444444"
-            android:textSize="12sp"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/admin_department"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_date_purchased"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="PURCHASED"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/admin_warranty"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="WARRANTY"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/admin_comp_age"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="AGE"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_labels_4"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="DEPARTMENT"
-            android:textColor="#444444"
-            android:textSize="12sp"/>
+            android:orientation="horizontal"
+            android:visibility="visible">
 
-        <TextView
-            android:id="@+id/admin_computer_name"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_header_last_pw"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="PW Changed"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/admin_header_last_reimage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Reimaged"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/admin_header_level_and_usage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Lvl : : Usage"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_details_4"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="COMP NAME"
-            android:textColor="#444444"
-            android:textSize="12sp"/>
+            android:orientation="vertical">
 
-    </TableRow>
+            <TextView
+                android:id="@+id/admin_last_pw"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="LAST CHANGE"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
 
-    <TableRow
-        android:id="@+id/admin_labels_2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:visibility="visible">
+            <TextView
+                android:id="@+id/admin_last_reimage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="LAST REIMAGE"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
 
-        <TextView
-            android:id="@+id/admin_header_date_purchased"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_level_and_usage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="LVL : : USAGE"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_labels_5"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="Purchased"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+            android:orientation="horizontal"
+            android:visibility="visible">
 
-        <TextView
-            android:id="@+id/admin_header_warranty"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_header_mac_wired"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="MAC (Wired)"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/admin_header_mac_wireless"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="MAC (Wireless)"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_details_5"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="Warranty"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/admin_header_comp_age"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_mac_wired"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="MM:MM:MM:SS:SS:SS"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/admin_mac_wireless"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="MM:MM:MM:SS:SS:SS"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_labels_6"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="Comp Age"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+            android:orientation="horizontal"
+            android:visibility="visible">
 
-        <TextView
-            android:id="@+id/admin_header_model"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_header_monitor_count"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Monitor Count"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/admin_header_monitor_size"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Monitor Size(s)"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_details_6"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="Model"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+            android:orientation="vertical">
 
-    </TableRow>
+            <TextView
+                android:id="@+id/admin_monitor_count"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="#######"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
 
-    <TableRow
-        android:id="@+id/admin_details_2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+            <TextView
+                android:id="@+id/admin_monitor_size"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="#######"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
 
-        <TextView
-            android:id="@+id/admin_date_purchased"
-            android:layout_width="95dp"
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_labels_7"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="PURCHASED"
-            android:textColor="#444444"
-            android:textSize="12sp"/>
+            android:orientation="horizontal"
+            android:visibility="visible">
 
-        <TextView
-            android:id="@+id/admin_warranty"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_header_phone_ext"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Phone Extension"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/admin_header_phone_type"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Phone Type"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_details_7"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="WARRANTY"
-            android:textColor="#444444"
-            android:textSize="12sp"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/admin_comp_age"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_phone_ext"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="####"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/admin_phone_type"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="# button"
+                android:textColor="#444444"
+                android:textSize="12sp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_labels_notes"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="AGE"
-            android:textColor="#444444"
-            android:textSize="12sp"/>
+            android:orientation="horizontal"
+            android:visibility="visible">
 
-        <TextView
-            android:id="@+id/admin_model"
-            android:layout_width="95dp"
+            <TextView
+                android:id="@+id/admin_header_notes"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="15dp"
+                android:text="Notes"
+                android:textColor="#444444"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/admin_details_notes"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif-condensed"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="MODEL"
-            android:textColor="#444444"
-            android:textSize="10sp"/>
+            android:orientation="vertical">
 
-    </TableRow>
+            <TextView
+                android:id="@+id/admin_notes"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:text="NOTES"
+                android:textColor="#444444"
+                android:textSize="12sp"
+                android:layout_weight="1"/>
 
-    <TableRow
-        android:id="@+id/admin_labels_3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:visibility="visible">
+        </TableRow>
 
-        <TextView
-            android:id="@+id/admin_header_last_reimage"
-            android:layout_width="95dp"
+        <TableRow
+            android:id="@+id/admin_print_row"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="Reimaged"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/admin_header_last_pw"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="PW Changed"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+            <Button
+                android:id="@+id/admin_print_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:onClick="onPrintClick"
+                android:text="@string/print_button"/>
 
-        <TextView
-            android:id="@+id/admin_header_level_and_usage"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="Lvl : : Usage"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/admin_header_serial_num"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="Serial"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/admin_details_3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/admin_last_reimage"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="LAST REIMAGE"
-            android:textColor="#444444"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/admin_last_pw"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="LAST CHANGE"
-            android:textColor="#444444"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/admin_level_and_usage"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="LVL : : USAGE"
-            android:textColor="#444444"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/admin_serial_num"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif-condensed"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="SERIAL"
-            android:textColor="#444444"
-            android:textSize="10sp"/>
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/admin_labels_4"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:visibility="visible">
-
-        <TextView
-            android:id="@+id/admin_header_mac_wired"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_span="2"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="MAC (Wired)"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/admin_header_mac_wireless"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_span="2"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="MAC (Wireless)"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/admin_details_4"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/admin_mac_wired"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_span="2"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="MM:MM:MM:SS:SS:SS"
-            android:textColor="#444444"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/admin_mac_wireless"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_span="2"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="MM:MM:MM:SS:SS:SS"
-            android:textColor="#444444"
-            android:textSize="12sp"/>
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/admin_labels_notes"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:visibility="visible">
-
-        <TextView
-            android:id="@+id/admin_header_notes"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_span="4"
-            android:gravity="center"
-            android:paddingBottom="0dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:text="Notes"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/admin_details_notes"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/admin_notes"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_span="4"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="10dp"
-            android:text="NOTES"
-            android:textColor="#444444"
-            android:textSize="12sp"/>
-
-    </TableRow>
-
-</TableLayout>
+        </TableRow>
+    </TableLayout>
+</ScrollView>

@@ -8,9 +8,6 @@ package edu.mccnh.mccscanner.datastorage;
 
 public class AcadComputerInfo extends ComputerInfo
 {
-    // Acad side is Sheet #2, 1 if 0-indexed
-    // Total number of columns is 8 after throwing away unwanted/unused columns.
-    // Total number of columns with unwanted/ignored columns is 13.
     // Ignored columns:
     // Age of the Computers
     // Projector
@@ -23,38 +20,50 @@ public class AcadComputerInfo extends ComputerInfo
     // 1 Room/area (starts at col B for some reason??)
     // 2 Number of Computers
     // 3 Make/model
-    // 4 PC Level
-    // 5 Age of the Computers
-    // 6 Usage Level
-    // 7 Date Purchased
-    // 8 Warranty
-    // 9 Projector (IGNORED)
-    // 10 Apple TV (IGNORED)
-    // 11 LCD TV (IGNORED)
-    // 12 Printer (IGNORED)
-    // 13 Notes
+    // 4 Serial
+    // 5 PC Level
+    // 6 Age of the Computers
+    // 7 Usage Level
+    // 8 Date Purchased
+    // 9 Warranty
+    // 10 MAC Address (Wireless)
+    // 11 MAC Address (Wired)
+    // 12 Monitor Size
+    // 13 Monitor Count
+    // 14 Projector (IGNORED)
+    // 15 Apple TV (IGNORED)
+    // 16 LCD TV (IGNORED)
+    // 17 Printer (IGNORED)
+    // 18 Notes
+    // TOTAL COUNT: 19
+    // SANS IGNORED: 14
 
-    public AcadComputerInfo(String[] orderedAcadData)
+    public AcadComputerInfo(String[] orderedAcadData, int id)
     {
+        super(id);
         roomArea = orderedAcadData[0];
         numberOfComputers = orderedAcadData[1];
         model = orderedAcadData[2];
-        pcLevel = orderedAcadData[3];
-        pcAge = orderedAcadData[4];
-        usageScale = orderedAcadData[5];
-        datePurchased = orderedAcadData[6];
-        warrantyStatus = orderedAcadData[7];
-        notes = orderedAcadData[8];
+        serialNumber = orderedAcadData[3];
+        pcLevel = orderedAcadData[4];
+        pcAge = orderedAcadData[5];
+        usageScale = orderedAcadData[6];
+        datePurchased = orderedAcadData[7];
+        warrantyStatus = orderedAcadData[8];
+        macAddressWireless = orderedAcadData[9];
+        macAddressWired = orderedAcadData[10];
+        monitorSize = orderedAcadData[11];
+        monitorCount = orderedAcadData[12];
+        notes = orderedAcadData[13];
     }
 
-    private final String roomArea;
-    private final String numberOfComputers;
+    private String roomArea;
+    private String numberOfComputers;
 
     public String getRoomArea()
     {
         return roomArea;
     }
-
     public String getNumberOfComputers()
     {
         return numberOfComputers;

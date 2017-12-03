@@ -9,7 +9,7 @@ package edu.mccnh.mccscanner.datastorage;
 public class AdminComputerInfo extends ComputerInfo
 {
     // Ignored columns:
-    // NONE
+    // NONE...anymore
 
     // Raw columns:
     // 0 Last Name
@@ -24,7 +24,7 @@ public class AdminComputerInfo extends ComputerInfo
     // 9 Age of the PC
     // 10 Usage Scale (1-3)
     // 11 Warranty Status
-    // 12 Number of Monitors
+    // 12 Monitor Count
     // 13 Monitor Size(s)
     // 14 MAC Address (Wired)
     // 15 MAC Address (Wireless)
@@ -32,9 +32,11 @@ public class AdminComputerInfo extends ComputerInfo
     // 17 Phone Type (12 or 6 Buttons)
     // 18 Re-Imaged
     // 19 Notes
+    // TOTAL COUNT: 20
 
-    public AdminComputerInfo(String[] orderedAdminData)
+    public AdminComputerInfo(String[] orderedAdminData, int id)
     {
+        super(id);
         lastName = orderedAdminData[0];
         firstName = orderedAdminData[1];
         department = orderedAdminData[2];
@@ -47,21 +49,24 @@ public class AdminComputerInfo extends ComputerInfo
         pcAge = orderedAdminData[9];
         usageScale = orderedAdminData[10];
         warrantyStatus = orderedAdminData[11];
-        macAddressWired = orderedAdminData[12];
-        macAddressWireless = orderedAdminData[13];
-        lastReimage = orderedAdminData[14];
-        notes = orderedAdminData[15];
+        monitorCount = orderedAdminData[12];
+        monitorSize = orderedAdminData[13];
+        macAddressWired = orderedAdminData[14];
+        macAddressWireless = orderedAdminData[15];
+        phoneExtension = orderedAdminData[16];
+        phoneType = orderedAdminData[17];
+        lastReimage = orderedAdminData[18];
+        notes = orderedAdminData[19];
     }
 
-    private final String lastName;
-    private final String firstName;
-    private final String department;
-    private final String computerName;
-    private final String lastPasswordChange;
-    private final String serialNumber;
-    private final String macAddressWired;
-    private final String macAddressWireless;
-    private final String lastReimage;
+    private String lastName;
+    private String firstName;
+    private String department;
+    private String computerName;
+    private String lastPasswordChange;
+    private String phoneExtension;
+    private String phoneType;
+    private String lastReimage;
 
     public String getLastName()
     {
@@ -83,17 +88,13 @@ public class AdminComputerInfo extends ComputerInfo
     {
         return lastPasswordChange;
     }
-    public String getSerialNumber()
+    public String getPhoneExtension()
     {
-        return serialNumber;
+        return phoneExtension;
     }
-    public String getMacAddressWired()
+    public String getPhoneType()
     {
-        return macAddressWired;
-    }
-    public String getMacAddressWireless()
-    {
-        return macAddressWireless;
+        return phoneType;
     }
     public String getLastReimage()
     {

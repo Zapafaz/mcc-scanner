@@ -14,14 +14,14 @@ public class Utility
 {
     // Various constants
     static final String ID_COL_INDICATOR = "\u2611";
-    static final int ADMIN_SHEET = 0;
-    static final int ACAD_SHEET = 1;
+    public static final int ADMIN_SHEET = 0;
+    public static final int ACAD_SHEET = 1;
     static final int ADMIN_RAW_SIZE = 20;
-    static final int ACAD_RAW_SIZE = 14;
-    public static final int ADMIN_ORDERED_SIZE = 16;
-    public static final int ACAD_ORDERED_SIZE = 9;
+    static final int ACAD_RAW_SIZE = 19;
+    public static final int ADMIN_ORDERED_SIZE = 20;
+    public static final int ACAD_ORDERED_SIZE = 14;
     static final int[] ADMIN_IGNORED_COLS = null;
-    static final int[] ACAD_IGNORED_COLS = new int[]{ 0, 9, 10, 11, 12};
+    static final int[] ACAD_IGNORED_COLS = new int[]{ 0, 14, 15, 16, 17};
 
     // Gets the file extension for a given file.
     public static String getFileExtension(File file)

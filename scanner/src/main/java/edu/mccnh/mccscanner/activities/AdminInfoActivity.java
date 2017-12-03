@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import edu.mccnh.mccscanner.R;
@@ -15,7 +16,7 @@ import edu.mccnh.mccscanner.datastorage.AdminComputerInfo;
  * For CIS291M Capstone Senior Seminar
  * Instructor: Adnan Tahir
  */
-
+// TODO: maybe extend from another activity to avoid duplicated code w/ AcadInfoActivity
 public class AdminInfoActivity extends AppCompatActivity
 {
     private  AdminComputerInfo infoToDisplay;
@@ -31,8 +32,12 @@ public class AdminInfoActivity extends AppCompatActivity
     private TextView pcLevelAndUsageScale;
     private TextView pcAge;
     private TextView warrantyStatus;
+    private TextView monitorCount;
+    private TextView monitorSize;
     private TextView macWired;
     private TextView macWireless;
+    private TextView phoneExtension;
+    private TextView phoneType;
     private TextView lastReimage;
     private TextView notes;
 
@@ -41,22 +46,25 @@ public class AdminInfoActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_info);
-
-        lastName = (TextView)findViewById(R.id.admin_last_name);
-        firstName = (TextView)findViewById(R.id.admin_first_name);
-        department = (TextView)findViewById(R.id.admin_department);
-        computerName = (TextView)findViewById(R.id.admin_computer_name);
-        lastPasswordChange = (TextView)findViewById(R.id.admin_last_pw);
-        serialNumber = (TextView)findViewById(R.id.admin_serial_num);
-        model = (TextView)findViewById(R.id.admin_model);
-        datePurchased = (TextView)findViewById(R.id.admin_date_purchased);
-        pcLevelAndUsageScale = (TextView)findViewById(R.id.admin_level_and_usage);
-        pcAge = (TextView)findViewById(R.id.admin_comp_age);
-        warrantyStatus = (TextView)findViewById(R.id.admin_warranty);
-        macWired = (TextView)findViewById(R.id.admin_mac_wired);
-        macWireless = (TextView)findViewById(R.id.admin_mac_wireless);
-        lastReimage = (TextView)findViewById(R.id.admin_last_reimage);
-        notes = (TextView)findViewById(R.id.admin_notes);
+        lastName = findViewById(R.id.admin_last_name);
+        firstName = findViewById(R.id.admin_first_name);
+        department = findViewById(R.id.admin_department);
+        computerName = findViewById(R.id.admin_computer_name);
+        lastPasswordChange = findViewById(R.id.admin_last_pw);
+        serialNumber = findViewById(R.id.admin_serial_num);
+        model = findViewById(R.id.admin_model);
+        datePurchased = findViewById(R.id.admin_date_purchased);
+        pcLevelAndUsageScale = findViewById(R.id.admin_level_and_usage);
+        pcAge = findViewById(R.id.admin_comp_age);
+        warrantyStatus = findViewById(R.id.admin_warranty);
+        monitorCount = findViewById(R.id.admin_monitor_count);
+        monitorSize = findViewById(R.id.admin_monitor_size);
+        macWired = findViewById(R.id.admin_mac_wired);
+        macWireless = findViewById(R.id.admin_mac_wireless);
+        phoneExtension = findViewById(R.id.admin_phone_ext);
+        phoneType = findViewById(R.id.admin_phone_type);
+        lastReimage = findViewById(R.id.admin_last_reimage);
+        notes = findViewById(R.id.admin_notes);
     }
 
     @Override
@@ -65,9 +73,10 @@ public class AdminInfoActivity extends AppCompatActivity
         super.onStart();
         Intent intent = getIntent();
         String[] orderedComputerInfo = intent.getStringArrayExtra(MainActivity.EXTRA_ORDERED_DATA);
+        int id = intent.getIntExtra(MainActivity.EXTRA_ID_CODE, 0);
         if (orderedComputerInfo.length == Utility.ADMIN_ORDERED_SIZE)
         {
-            infoToDisplay = new AdminComputerInfo(orderedComputerInfo);
+            infoToDisplay = new AdminComputerInfo(orderedComputerInfo, id);
         }
         else
         {
@@ -87,11 +96,20 @@ public class AdminInfoActivity extends AppCompatActivity
             pcLevelAndUsageScale.setText(getString(R.string.level_and_usage, infoToDisplay.getPcLevel(), infoToDisplay.getUsageScale()));
             pcAge.setText(infoToDisplay.getPcAge());
             warrantyStatus.setText(infoToDisplay.getWarrantyStatus());
+            monitorCount.setText(infoToDisplay.getMonitorCount());
+            monitorSize.setText(infoToDisplay.getMonitorSize());
             macWired.setText(infoToDisplay.getMacAddressWired());
             macWireless.setText(infoToDisplay.getMacAddressWireless());
+            phoneExtension.setText(infoToDisplay.getPhoneExtension());
+            phoneType.setText(infoToDisplay.getPhoneType());
             lastReimage.setText(infoToDisplay.getLastReimage());
             notes.setText(infoToDisplay.getNotes());
         }
+    }
+
+    public void onPrintClick(View view)
+    {
+
     }
 
     // Displays the error to the user via new activity
