@@ -1,5 +1,6 @@
 package edu.mccnh.mccscanner.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,14 +18,11 @@ import android.view.View;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 import edu.mccnh.mccscanner.ExcelParsing;
@@ -41,14 +39,16 @@ import edu.mccnh.mccscanner.Utility;
 public class MainActivity extends AppCompatActivity implements SettingsFragment.OnFragmentInteractionListener, SharedPreferences.OnSharedPreferenceChangeListener
 {
 
-    // Control flow: checkPermissionReadStorage -> onRequestPermissionResult -> checkPermissionCamera -> onRequestPermissionResult -> (continued)...
+    // Control flow: checkPermissionReadStorage -> onRequestPermissionResult -> checkPermissionWriteStorage -> onRequestPermissionResult -> checkPermissionCamera -> onRequestPermissionResult -> (continued)...
     // startScan -> (scanning activity) -> onActivityResult -> displayInfo -> (next activity: Display(Admin/Acad)InfoActivity)
     // Any errors along the way get sent to displayError
 
-    final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 0;
-    final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
-    final int PERMISSION_REQUEST_RATIONALE_CODE_READ_EXTERNAL_STORAGE = 2;
-    final int PERMISSION_REQUEST_RATIONALE_CODE_CAMERA = 3;
+    final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 0;
+    final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+    final int PERMISSIONS_REQUEST_CAMERA = 2;
+    final int PERMISSION_REQUEST_RATIONALE_CODE_READ_EXTERNAL_STORAGE = 3;
+    final int PERMISSION_REQUEST_RATIONALE_CODE_WRITE_EXTERNAL_STORAGE = 4;
+    final int PERMISSION_REQUEST_RATIONALE_CODE_CAMERA = 5;
     public static final String EXTRA_ORDERED_DATA = "edu.mccnh.mccscanner.EXTRA_ORDERED_DATA";
     public static final String EXTRA_ID_CODE = "edu.mccnh.mccscanner.EXTRA_ID_CODE";
     public static final String EXTRA_ERROR_DISPLAY = "edu.mccnh.mccscanner.EXTRA_ERROR_DISPLAY";
@@ -81,35 +81,6 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(KEY_PREF_FIRST, false).apply();
             showSettings();
-        }
-    }
-
-    // Called after each request for permissions
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults)
-    {
-        switch(requestCode)
-        {
-            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
-                    checkPermissionCamera(this);
-                }
-                else
-                {
-                    noPermissions(PERMISSION_REQUEST_RATIONALE_CODE_READ_EXTERNAL_STORAGE);
-                }
-            case MY_PERMISSIONS_REQUEST_CAMERA:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
-                    startScan();
-                }
-                else
-                {
-                    noPermissions(PERMISSION_REQUEST_RATIONALE_CODE_CAMERA);
-                }
         }
     }
 
@@ -153,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
                             displayInfo(orderedInfo, codes);
                         }
                     }
-                } catch (IOException | InvalidFormatException | EncryptedDocumentException e)
+                } catch (Exception e)
                 {
                     displayError(e.getClass().getCanonicalName(), e.getLocalizedMessage());
                 }
@@ -171,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 
     // Loads the file -> workbook from the given path into a static variable (memory) so it can be used for multiple scans
     private void loadWorkbook(String path)
-            throws IOException, InvalidFormatException, EncryptedDocumentException
+            throws Exception
     {
         if (currentWorkbook == null)
         {
@@ -179,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             currentWorkbook = WorkbookFactory.create(stream);
         }
     }
+
     // Parse QR code into an int array: index 0 is the type of PC (admin or academic), index 1 is the rest of the QR code (i.e. the ID code for the pc)
     private static int[] decipherQrCode(String qrCode)
     {
@@ -315,10 +287,54 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             errorString = "MainActivity.noPermissions: no camera permission, code: " + code;
             errorTag = "NO_PERM_CAMERA";
         }
+        else if (code == PERMISSION_REQUEST_RATIONALE_CODE_WRITE_EXTERNAL_STORAGE)
+        {
+            errorString = "MainActivity.noPermissions: no write storage permission, code: " + code;
+            errorTag = "NO_PERM_WRITE_STORAGE";
+        }
         displayError(errorTag, errorString);
     }
 
-    // Calls checkPermissionCamera if app has read storage permission, requestPermissions(read storage) if not, otherwise calls noPermissions
+    // Called after each request for permissions
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults)
+    {
+        switch(requestCode)
+        {
+            case PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    checkPermissionWriteStorage(this);
+                }
+                else
+                {
+                    noPermissions(PERMISSION_REQUEST_RATIONALE_CODE_READ_EXTERNAL_STORAGE);
+                }
+            case PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    checkPermissionCamera(this);
+                }
+                else
+                {
+                    noPermissions(PERMISSION_REQUEST_RATIONALE_CODE_WRITE_EXTERNAL_STORAGE);
+                }
+            case PERMISSIONS_REQUEST_CAMERA:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    startScan();
+                }
+                else
+                {
+                    noPermissions(PERMISSION_REQUEST_RATIONALE_CODE_CAMERA);
+                }
+        }
+    }
+
+    // Calls checkPermissionWriteStorage if app has read storage permission, requestPermissions(read storage) if not, otherwise calls noPermissions
     public void checkPermissionReadStorage(Activity activity)
     {
         int checkIfPermissionGranted = ContextCompat.checkSelfPermission(activity, android.Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -330,7 +346,28 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             }
             else
             {
-                ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+            }
+        }
+        else if (checkIfPermissionGranted == PackageManager.PERMISSION_GRANTED)
+        {
+            checkPermissionWriteStorage(this);
+        }
+    }
+
+    // Calls checkPermissionCamera if app has write storage permission, requestPermissions(write storage) if not, otherwise calls noPermissions
+    public void checkPermissionWriteStorage(Activity activity)
+    {
+        int checkIfPermissionGranted = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (checkIfPermissionGranted == PackageManager.PERMISSION_DENIED)
+        {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            {
+                noPermissions(PERMISSION_REQUEST_RATIONALE_CODE_WRITE_EXTERNAL_STORAGE);
+            }
+            else
+            {
+                ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_RATIONALE_CODE_WRITE_EXTERNAL_STORAGE);
             }
         }
         else if (checkIfPermissionGranted == PackageManager.PERMISSION_GRANTED)
@@ -351,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             }
             else
             {
-                ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+                ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CAMERA);
             }
         }
         else if (checkIfPermissionGranted == PackageManager.PERMISSION_GRANTED)

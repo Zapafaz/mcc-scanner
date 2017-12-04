@@ -57,6 +57,7 @@ public class AdminComputerInfo extends ComputerInfo
         phoneType = orderedAdminData[17];
         lastReimage = orderedAdminData[18];
         notes = orderedAdminData[19];
+        type = ComputerInfoType.Admin;
     }
 
     private String lastName;

@@ -23,12 +23,12 @@ android {
     productFlavors {
         betaConfig {
             dimension "beta"
-            versionName '0.9.2'
+            versionName '0.9.7'
             minSdkVersion 16
             applicationId 'edu.mccnh.mccscanner'
             targetSdkVersion 26
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 3
+            versionCode 6
             multiDexEnabled true
         }
     }
@@ -41,9 +41,10 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'com.android.support:appcompat-v7:26.+'
-    implementation 'com.github.angads25:filepicker:1.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.github.angads25:filepicker:1.1.1'
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
+    implementation 'com.itextpdf:itextg:5.5.10'
     testImplementation 'junit:junit:4.12'
     implementation files('libs/poishadow-all/poishadow-all.jar')
 }

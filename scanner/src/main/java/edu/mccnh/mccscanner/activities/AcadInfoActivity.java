@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ public class AcadInfoActivity extends AppCompatActivity
     private TextView macWireless;
     private TextView notes;
     private Button printButton;
+    private String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -88,13 +90,18 @@ public class AcadInfoActivity extends AppCompatActivity
             macWired.setText(infoToDisplay.getMacAddressWired());
             macWireless.setText(infoToDisplay.getMacAddressWireless());
             notes.setText(infoToDisplay.getNotes());
-            printButton.setText(getString(R.string.print_button, infoToDisplay.getPdfFilePath()));
+            fileName = infoToDisplay.getPdfFilePath();
+            printButton.setText(getString(R.string.print_button, fileName));
         }
     }
 
     public void onPrintClick(View view)
     {
-
+        ViewGroup layout = (ViewGroup)printButton.getParent();
+        if (layout != null)
+        {
+            layout.removeView(printButton);
+        }
     }
 
     // Displays the error to the user via new activity

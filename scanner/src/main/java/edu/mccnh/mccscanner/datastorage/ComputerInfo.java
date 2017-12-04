@@ -25,15 +25,21 @@ public abstract class ComputerInfo
     String macAddressWireless;
     String notes;
     int id;
+    ComputerInfoType type;
 
     public ComputerInfo(int id)
     {
         this.id = id;
     }
 
+    public ComputerInfoType getType(){return type;}
     public String getPdfFilePath()
     {
-        return id + "_" + new SimpleDateFormat("MMMdd-hh-mm-ss", Locale.US).format(Calendar.getInstance().getTime()) + ".pdf";
+        return id + "_" + new SimpleDateFormat("hh-mm-ss", Locale.US).format(Calendar.getInstance().getTime()) + ".pdf";
+    }
+    public int getId()
+    {
+        return id;
     }
     public String getSerialNumber()
     {

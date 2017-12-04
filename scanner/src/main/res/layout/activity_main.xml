@@ -23,7 +23,8 @@
         android:paddingBottom="15dp"
         android:paddingTop="15dp"
         android:text="@string/scan_button"
-        android:textColor="#fff"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/textColorPrimary"/>
 
     <TextView
         android:id="@+id/button_settings"
@@ -37,6 +38,7 @@
         android:paddingBottom="15dp"
         android:paddingTop="15dp"
         android:text="@string/settings_button"
-        android:textColor="#fff"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/textColorPrimary"/>
 
 </LinearLayout>

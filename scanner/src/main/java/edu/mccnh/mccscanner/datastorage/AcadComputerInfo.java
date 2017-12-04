@@ -55,6 +55,7 @@ public class AcadComputerInfo extends ComputerInfo
         monitorSize = orderedAcadData[11];
         monitorCount = orderedAcadData[12];
         notes = orderedAcadData[13];
+        type = ComputerInfoType.Acad;
     }
 
     private String roomArea;

@@ -37,7 +37,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Last Name"
+                android:text="@string/last_name"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -53,7 +53,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="First Name"
+                android:text="@string/first_name"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -69,7 +69,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Department"
+                android:text="@string/department"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -147,7 +147,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Comp Name"
+                android:text="@string/comp_name"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -163,7 +163,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Model"
+                android:text="@string/model"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -179,7 +179,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Serial"
+                android:text="@string/serial"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -257,7 +257,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Purchased"
+                android:text="@string/purchased"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -273,7 +273,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Warranty"
+                android:text="@string/warranty"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -289,7 +289,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Comp Age"
+                android:text="@string/comp_age"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -367,7 +367,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="PW Changed"
+                android:text="@string/pw_changed"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -383,7 +383,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Reimaged"
+                android:text="@string/reimaged"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -399,7 +399,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Lvl : : Usage"
+                android:text="@string/lvl_usage"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -477,7 +477,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="MAC (Wired)"
+                android:text="@string/mac_wired"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -493,7 +493,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="MAC (Wireless)"
+                android:text="@string/mac_wireless"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -556,7 +556,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Monitor Count"
+                android:text="@string/monitor_count"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -572,7 +572,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Monitor Size(s)"
+                android:text="@string/monitor_size"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -635,7 +635,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Phone Extension"
+                android:text="@string/phone_ext"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -651,7 +651,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Phone Type"
+                android:text="@string/phone_type"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -714,7 +714,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="Notes"
+                android:text="@string/notes"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -756,9 +756,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:background="@color/colorPrimary"
                 android:onClick="onPrintClick"
-                android:text="@string/print_button"/>
-
+                android:text="@string/print_button"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/textColorPrimary"/>
         </TableRow>
     </TableLayout>
 </ScrollView>

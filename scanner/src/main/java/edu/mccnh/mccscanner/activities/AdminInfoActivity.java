@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import edu.mccnh.mccscanner.Creator;
 import edu.mccnh.mccscanner.R;
 import edu.mccnh.mccscanner.Utility;
 import edu.mccnh.mccscanner.datastorage.AdminComputerInfo;
@@ -16,6 +19,7 @@ import edu.mccnh.mccscanner.datastorage.AdminComputerInfo;
  * For CIS291M Capstone Senior Seminar
  * Instructor: Adnan Tahir
  */
+
 // TODO: maybe extend from another activity to avoid duplicated code w/ AcadInfoActivity
 public class AdminInfoActivity extends AppCompatActivity
 {
@@ -40,6 +44,8 @@ public class AdminInfoActivity extends AppCompatActivity
     private TextView phoneType;
     private TextView lastReimage;
     private TextView notes;
+    private Button printButton;
+    private String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -65,6 +71,7 @@ public class AdminInfoActivity extends AppCompatActivity
         phoneType = findViewById(R.id.admin_phone_type);
         lastReimage = findViewById(R.id.admin_last_reimage);
         notes = findViewById(R.id.admin_notes);
+        printButton = findViewById(R.id.admin_print_button);
     }
 
     @Override
@@ -104,12 +111,32 @@ public class AdminInfoActivity extends AppCompatActivity
             phoneType.setText(infoToDisplay.getPhoneType());
             lastReimage.setText(infoToDisplay.getLastReimage());
             notes.setText(infoToDisplay.getNotes());
+            fileName = infoToDisplay.getPdfFilePath();
+            printButton.setText(getString(R.string.print_button, fileName));
         }
     }
 
     public void onPrintClick(View view)
     {
+        optimizeForPrint();
+        Creator creator = new Creator(fileName, infoToDisplay, this);
+        try
+        {
+            creator.createPdf();
+        }
+        catch(Exception e)
+        {
 
+        }
+    }
+
+    private void optimizeForPrint()
+    {
+        ViewGroup layout = (ViewGroup)printButton.getParent();
+        if (layout != null)
+        {
+            layout.removeView(printButton);
+        }
     }
 
     // Displays the error to the user via new activity

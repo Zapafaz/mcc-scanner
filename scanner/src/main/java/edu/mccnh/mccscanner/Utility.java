@@ -20,6 +20,10 @@ public class Utility
     static final int ACAD_RAW_SIZE = 19;
     public static final int ADMIN_ORDERED_SIZE = 20;
     public static final int ACAD_ORDERED_SIZE = 14;
+    public static final int ADMIN_PDF_COL_COUNT = 6;
+    public static final int ADMIN_3_COL_ROW_SPAN = 2;
+    public static final int ADMIN_2_COL_ROW_SPAN = 3;
+    public static final int ACAD_PDF_COL_COUNT = 8;
     static final int[] ADMIN_IGNORED_COLS = null;
     static final int[] ACAD_IGNORED_COLS = new int[]{ 0, 14, 15, 16, 17};
 

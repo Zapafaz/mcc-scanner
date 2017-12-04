@@ -4,7 +4,7 @@
     <string name="admin_header_label">MCC Scanner: Results (Admin)</string>
     <string name="acad_header_label">MCC Scanner: Results (Academic)</string>
     <string name="error_header_label">MCC Scanner: Error</string>
-    <string name="settings_button">Set File Location</string>
+    <string name="settings_button">Settings (input and output location)</string>
     <string name="scan_button">Scan</string>
     <string name="return_button">Try Again</string>
     <string name="level_and_usage">%1$s : : %2$s</string>
@@ -13,6 +13,39 @@
     <string name="pref_title_excel_file">Excel File Location</string>
     <string name="pref_summary_excel_file">%1$s</string>
 
+    <string name="pref_title_output_folder">Output Folder Location</string>
+    <string name="pref_summary_output_folder">%1$s</string>
+
     <string name="pref_title_first_run">First Time Running App</string>
     <string name="settings">settings fragment</string>
+
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="department">Department</string>
+
+    <string name="room_area">Room/Area</string>
+    <string name="comp_count">Comp Count</string>
+
+    <string name="comp_name">Comp Name</string>
+    <string name="model">Model</string>
+    <string name="serial">Serial</string>
+
+    <string name="purchased">Purchased</string>
+    <string name="warranty">Warranty</string>
+    <string name="comp_age">Comp Age</string>
+
+    <string name="pw_changed">PW Changed</string>
+    <string name="reimaged">Reimaged</string>
+    <string name="lvl_usage">Lvl : : Usage</string>
+
+    <string name="mac_wired">MAC (Wired)</string>
+    <string name="mac_wireless">MAC (Wireless)</string>
+
+    <string name="monitor_count">Monitor Count</string>
+    <string name="monitor_size">Monitor Size(s)</string>
+
+    <string name="phone_ext">Phone Extension</string>
+    <string name="phone_type">Phone Type</string>
+
+    <string name="notes">Notes</string>
 </resources>
