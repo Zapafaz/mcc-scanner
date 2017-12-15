@@ -36,7 +36,7 @@
 
     <string name="pw_changed">PW Changed</string>
     <string name="reimaged">Reimaged</string>
-    <string name="lvl_usage">Lvl : : Usage</string>
+    <string name="lvl_usage_header">Lvl : : Usage</string>
 
     <string name="mac_wired">MAC (Wired)</string>
     <string name="mac_wireless">MAC (Wireless)</string>
@@ -48,4 +48,5 @@
     <string name="phone_type">Phone Type</string>
 
     <string name="notes">Notes</string>
+    <string name="print_button_after_print">Printed to %1$s</string>
 </resources>

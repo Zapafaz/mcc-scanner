@@ -23,12 +23,12 @@ android {
     productFlavors {
         betaConfig {
             dimension "beta"
-            versionName '0.9.7'
+            versionName '0.9.9'
             minSdkVersion 16
             applicationId 'edu.mccnh.mccscanner'
             targetSdkVersion 26
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 6
+            versionCode 9
             multiDexEnabled true
         }
     }

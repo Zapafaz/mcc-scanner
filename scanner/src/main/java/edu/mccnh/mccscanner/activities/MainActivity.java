@@ -35,12 +35,12 @@ import edu.mccnh.mccscanner.Utility;
  * For CIS291M Capstone Senior Seminar
  * Instructor: Adnan Tahir
  */
-
+// TODO: Add a display activity that displays results with headers based on headers from file; maybe base column count on result length? and add option to show raw results in settings
 public class MainActivity extends AppCompatActivity implements SettingsFragment.OnFragmentInteractionListener, SharedPreferences.OnSharedPreferenceChangeListener
 {
 
     // Control flow: checkPermissionReadStorage -> onRequestPermissionResult -> checkPermissionWriteStorage -> onRequestPermissionResult -> checkPermissionCamera -> onRequestPermissionResult -> (continued)...
-    // startScan -> (scanning activity) -> onActivityResult -> displayInfo -> (next activity: Display(Admin/Acad)InfoActivity)
+    // startScan -> (scanning activity) -> onActivityResult -> parseCode -> displayInfo -> (next activity: Display(Admin/Acad)InfoActivity)
     // Any errors along the way get sent to displayError
 
     final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 0;
@@ -84,54 +84,64 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         }
     }
 
+    // Deciphers QR code and gets info to display, then sends it to displayInfo
+    private void parseCode(String qrCode)
+    {
+        String path  = getKeyPrefPath();
+
+        File excelFile = findExcelFile(path);
+        if (excelFile != null)
+        {
+            try
+            {
+                int[] codes = decipherQrCode(qrCode);
+                if (codes == null || codes.length < VALID_CODES)
+                {
+                    displayError("INVALID_QR_CODE", "No valid QR code was found");
+                }
+
+                loadWorkbook(path);
+                String[] rawComputerInfo = ExcelParsing.getRawComputerInfo(codes, currentWorkbook);
+                if (rawComputerInfo.length == STRING_ARRAY_ERROR)
+                {
+                    displayError(rawComputerInfo[0], rawComputerInfo[1]);
+                }
+                else
+                {
+                    String[] orderedInfo = Organizer.OrderRawComputerInfo(rawComputerInfo);
+                    if (orderedInfo.length == STRING_ARRAY_ERROR)
+                    {
+                        displayError(orderedInfo[0], orderedInfo[1]);
+                    }
+                    else
+                    {
+                        displayInfo(orderedInfo, codes);
+                    }
+                }
+            } catch (Exception e)
+            {
+                displayError(e.getClass().getCanonicalName(), e.getLocalizedMessage());
+            }
+        }
+        else
+        {
+            displayError("FILE_NOT_FOUND", "Could not find excel file at: " + path);
+        }
+    }
+
     // Called after result from QR code scan
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        String path  = getKeyPrefPath();
+
         if (scanResult != null)
         {
             String qrCode = scanResult.getContents();
-            Log.d("SCAN_RESULT", "qrCode: " + qrCode);
-
-            File excelFile = findExcelFile(path);
-            if (excelFile != null)
+            if (qrCode.length() > 0)
             {
-                try
-                {
-                    int[] codes = decipherQrCode(qrCode);
-                    if (codes == null || codes.length < VALID_CODES)
-                    {
-                        displayError("INVALID_QR_CODE", "No valid QR code was found");
-                    }
-
-                    loadWorkbook(path);
-                    String[] rawComputerInfo = ExcelParsing.getRawComputerInfo(codes, currentWorkbook);
-                    if (rawComputerInfo.length == STRING_ARRAY_ERROR)
-                    {
-                        displayError(rawComputerInfo[0], rawComputerInfo[1]);
-                    }
-                    else
-                    {
-                        String[] orderedInfo = Organizer.OrderRawComputerInfo(rawComputerInfo);
-                        if (orderedInfo.length == STRING_ARRAY_ERROR)
-                        {
-                            displayError(orderedInfo[0], orderedInfo[1]);
-                        }
-                        else
-                        {
-                            displayInfo(orderedInfo, codes);
-                        }
-                    }
-                } catch (Exception e)
-                {
-                    displayError(e.getClass().getCanonicalName(), e.getLocalizedMessage());
-                }
-            }
-            else
-            {
-                displayError("FILE_NOT_FOUND", "Could not find excel file at: " + path);
+                Log.d("SCAN_RESULT", "qrCode: " + qrCode);
+                parseCode(qrCode);
             }
         }
         else
@@ -249,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             intent = new Intent(this, AdminInfoActivity.class);
 
         }
-        else if (codes[1] == Utility.ACAD_SHEET)
+        else if (codes[0] == Utility.ACAD_SHEET)
         {
             intent = new Intent( this, AcadInfoActivity.class);
         }
@@ -272,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         integrator.initiateScan();
     }
 
-    // Called if no permissions for camera or read storage. App does not require any other permissions, so should never be called otherwise
+    // Called if no permissions for camera or write/read storage. App does not require any other permissions, so should never be called otherwise
     private void noPermissions(int code)
     {
         String errorString = "MainActivity.noPermissions received unknown error code: " + code;

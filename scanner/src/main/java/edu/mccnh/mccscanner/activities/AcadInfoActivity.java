@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import edu.mccnh.mccscanner.Creator;
 import edu.mccnh.mccscanner.R;
 import edu.mccnh.mccscanner.Utility;
 import edu.mccnh.mccscanner.datastorage.AcadComputerInfo;
@@ -95,12 +95,20 @@ public class AcadInfoActivity extends AppCompatActivity
         }
     }
 
+    // Handle print click by printing pdf and setting button to unclickable + grey
     public void onPrintClick(View view)
     {
-        ViewGroup layout = (ViewGroup)printButton.getParent();
-        if (layout != null)
+        Creator creator = new Creator(fileName, infoToDisplay, this);
+        try
         {
-            layout.removeView(printButton);
+            creator.createPdf();
+            printButton.setClickable(false);
+            printButton.setBackgroundColor(0xFF999999);
+            printButton.setText(getString(R.string.print_button_after_print, fileName));
+        }
+        catch(Exception e)
+        {
+            displayError(e.getClass().getCanonicalName(), "Could not print file due to exception. Exception message: " + e.getLocalizedMessage());
         }
     }
 

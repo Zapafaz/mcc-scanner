@@ -399,7 +399,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
-                android:text="@string/lvl_usage"
+                android:text="@string/lvl_usage_header"
                 android:textColor="#444444"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
