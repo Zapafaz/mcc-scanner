@@ -12,6 +12,7 @@ import java.util.Locale;
 
 public abstract class ComputerInfo
 {
+    String[] originalData;
     String serialNumber;
     String model;
     String pcLevel;
@@ -24,14 +25,15 @@ public abstract class ComputerInfo
     String macAddressWired;
     String macAddressWireless;
     String notes;
-    int id;
+    private int id;
     ComputerInfoType type;
 
-    public ComputerInfo(int id)
+    ComputerInfo(int id)
     {
         this.id = id;
     }
 
+    public String[] getOriginalData(){return originalData;}
     public ComputerInfoType getType(){return type;}
     public String getPdfFilePath()
     {

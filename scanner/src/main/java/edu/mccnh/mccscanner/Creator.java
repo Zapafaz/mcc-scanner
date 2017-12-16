@@ -35,8 +35,14 @@ import edu.mccnh.mccscanner.datastorage.ComputerInfoType;
 
 public class Creator
 {
-    private final int cellPadding = 12;
-    private final int labelBottomPadding = 5;
+    private static final int ADMIN_PDF_COL_COUNT = 6;
+    private static final int ADMIN_3_COL_ROW_SPAN = 2;
+    private static final int ADMIN_2_COL_ROW_SPAN = 3;
+    private static final int ACAD_PDF_COL_COUNT = 8;
+    private static final int ACAD_4_COL_ROW_SPAN = 2;
+    private static final int ACAD_2_COL_ROW_SPAN = 4;
+    private static final int CELL_PADDING = 12;
+    private static final int LABEL_BOTTOM_PADDING = 5;
     private String fileName;
     private AcadComputerInfo acadComputerInfo;
     private AdminComputerInfo adminComputerInfo;
@@ -100,10 +106,10 @@ public class Creator
     private PdfPTable createAdminTable()
             throws Exception
     {
-        int oneColumnRow = Utility.ADMIN_PDF_COL_COUNT;
+        int oneColumnRow = ADMIN_PDF_COL_COUNT;
         PdfPTable table = new PdfPTable(oneColumnRow);
-        int threeColumnRow = Utility.ADMIN_3_COL_ROW_SPAN;
-        int twoColumnRow = Utility.ADMIN_2_COL_ROW_SPAN;
+        int threeColumnRow = ADMIN_3_COL_ROW_SPAN;
+        int twoColumnRow = ADMIN_2_COL_ROW_SPAN;
         table.setHeaderRows(1);
         table.addCell(createHeaderCell(context.getString(R.string.admin_header_label) + " id: " + adminComputerInfo.getId(), oneColumnRow));
         table.completeRow();
@@ -169,10 +175,10 @@ public class Creator
     private PdfPTable createAcadTable()
             throws Exception
     {
-        int oneColumnRow = Utility.ACAD_PDF_COL_COUNT;
+        int oneColumnRow = ACAD_PDF_COL_COUNT;
         PdfPTable table = new PdfPTable(oneColumnRow);
-        int fourColumnRow = Utility.ACAD_4_COL_ROW_SPAN;
-        int twoColumnRow = Utility.ACAD_2_COL_ROW_SPAN;
+        int fourColumnRow = ACAD_4_COL_ROW_SPAN;
+        int twoColumnRow = ACAD_2_COL_ROW_SPAN;
         table.setHeaderRows(1);
         table.addCell(createHeaderCell(context.getString(R.string.acad_header_label) + "id: " + acadComputerInfo.getId(), oneColumnRow));
         table.completeRow();
@@ -223,7 +229,7 @@ public class Creator
         PdfPCell cell = new PdfPCell(new Phrase(text, cellFont));
         cell.setColspan(colSpan);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cell.setPadding(cellPadding);
+        cell.setPadding(CELL_PADDING);
         return cell;
     }
 
@@ -233,8 +239,8 @@ public class Creator
         PdfPCell cell = new PdfPCell(new Phrase(text, labelFont));
         cell.setColspan(colSpan);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cell.setPadding(cellPadding);
-        cell.setPaddingBottom(labelBottomPadding);
+        cell.setPadding(CELL_PADDING);
+        cell.setPaddingBottom(LABEL_BOTTOM_PADDING);
         return cell;
     }
 
@@ -244,7 +250,7 @@ public class Creator
         PdfPCell cell = new PdfPCell(new Phrase(text, headerFont));
         cell.setColspan(colSpan);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cell.setPadding(cellPadding);
+        cell.setPadding(CELL_PADDING);
         return cell;
     }
 
@@ -255,7 +261,7 @@ public class Creator
     {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String path = prefs.getString(MainActivity.KEY_PREF_PATH, "");
-        path = Utility.stripColon(path);
+        path = FileHandling.stripColon(path);
         File scanner;
         // If input folder is already a "Scanner" folder, don't make new folder named Scanner
         if (path.contains("Scanner"))

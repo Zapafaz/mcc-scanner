@@ -2,6 +2,9 @@ package edu.mccnh.mccscanner;
 
 import java.util.ArrayList;
 
+import edu.mccnh.mccscanner.datastorage.AcadComputerInfo;
+import edu.mccnh.mccscanner.datastorage.AdminComputerInfo;
+
 /**
  * Created by Adam on 10/8/2017.
  * For CIS291M Capstone Senior Seminar
@@ -11,7 +14,8 @@ import java.util.ArrayList;
 public class Organizer
 {
     // Organizes raw computer data set into either admin set or acad set, for use with ComputerInfo classes
-    public static String[] OrderRawComputerInfo(String[] rawComputerData)
+    @SuppressWarnings("ConstantConditions") // ConstantConditions warns of always null value for admin ignored indexes - it's (final) null now, but might change in future build, so check just in case, rather than flatly returning raw
+    public static String[] organize(String[] rawComputerData)
     {
         String[] orderedData;
         String errorString = "";
@@ -22,15 +26,26 @@ public class Organizer
         switch (rawComputerData.length)
         {
             // Admin side has no ignored columns
-            case Utility.ADMIN_RAW_SIZE:
-                return rawComputerData;
-            case Utility.ACAD_RAW_SIZE:
-                orderedData = new String[Utility.ACAD_ORDERED_SIZE];
-                ignoredIndexes = Utility.ACAD_IGNORED_COLS;
+            case AdminComputerInfo.RAW_SIZE:
+                orderedData = new String[AdminComputerInfo.ORDERED_SIZE];
+                ignoredIndexes = AdminComputerInfo.IGNORED_COLS;
+                if (ignoredIndexes == null || ignoredIndexes.length < 1)
+                {
+                    return rawComputerData;
+                }
+                validSize = true;
+                break;
+            case AcadComputerInfo.RAW_SIZE:
+                orderedData = new String[AcadComputerInfo.ORDERED_SIZE];
+                ignoredIndexes = AcadComputerInfo.IGNORED_COLS;
+                if (ignoredIndexes == null || ignoredIndexes.length < 1)
+                {
+                    return rawComputerData;
+                }
                 validSize = true;
                 break;
             default:
-                errorString = "Organizer.OrderRawComputerInfo received invalidly formatted raw data to be ordered. rawComputerData.length: " + rawComputerData.length;
+                errorString = "Organizer.organize received invalidly formatted raw data to be ordered. rawComputerData.length: " + rawComputerData.length;
                 errorTag = "INVALID_FORMAT";
                 orderedData = null;
                 validSize = false;
@@ -59,7 +74,7 @@ public class Organizer
             }
             orderedData = list.toArray(new String[orderedData.length]);
 
-            Utility.debugWriteArrayToLog("ORGANIZER", orderedData);
+            Debugging.write("ORGANIZER", orderedData);
             return orderedData;
         }
         return new String[] { errorTag, errorString };

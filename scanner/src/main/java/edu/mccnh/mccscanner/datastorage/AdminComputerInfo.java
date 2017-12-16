@@ -8,6 +8,13 @@ package edu.mccnh.mccscanner.datastorage;
 
 public class AdminComputerInfo extends ComputerInfo
 {
+    public static final int VALID_CODE_LOWER = 10000;
+    public static final int VALID_CODE_UPPER = 20000;
+    public static final int SHEET_ID = 0;
+    public static final int RAW_SIZE = 20;
+    public static final int ORDERED_SIZE = 20;
+    public static final int[] IGNORED_COLS = null;
+
     // Ignored columns:
     // NONE...anymore
 
@@ -37,6 +44,7 @@ public class AdminComputerInfo extends ComputerInfo
     public AdminComputerInfo(String[] orderedAdminData, int id)
     {
         super(id);
+        originalData = orderedAdminData;
         lastName = orderedAdminData[0];
         firstName = orderedAdminData[1];
         department = orderedAdminData[2];

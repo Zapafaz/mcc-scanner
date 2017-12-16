@@ -18,17 +18,15 @@ import android.view.View;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 import edu.mccnh.mccscanner.ExcelParsing;
+import edu.mccnh.mccscanner.FileHandling;
 import edu.mccnh.mccscanner.Organizer;
 import edu.mccnh.mccscanner.R;
-import edu.mccnh.mccscanner.Utility;
+import edu.mccnh.mccscanner.datastorage.AcadComputerInfo;
+import edu.mccnh.mccscanner.datastorage.AdminComputerInfo;
+import edu.mccnh.mccscanner.datastorage.ComputerInfoIdentifier;
 
 /**
  * Created by Adam on 9/10/2017.
@@ -40,8 +38,9 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 {
 
     // Control flow: checkPermissionReadStorage -> onRequestPermissionResult -> checkPermissionWriteStorage -> onRequestPermissionResult -> checkPermissionCamera -> onRequestPermissionResult -> (continued)...
-    // startScan -> (scanning activity) -> onActivityResult -> parseCode -> displayInfo -> (next activity: Display(Admin/Acad)InfoActivity)
+    // startScan -> (scanning activity) -> onActivityResult -> handleQrCode -> displayInfo -> (next activity: Display(Admin/Acad)InfoActivity)
     // Any errors along the way get sent to displayError
+
 
     final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 0;
     final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
@@ -55,10 +54,8 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     public static final String KEY_PREF_PATH = "pref_excel_file";
     public static final String KEY_PREF_FIRST = "pref_first_run";
     public static final int STRING_ARRAY_ERROR = 2;
-    public static final int VALID_CODES = 2;
 
-    // This ugly global variable is so the app doesn't have to re-load the whole workbook into memory with every scan
-    public static Workbook currentWorkbook = null;
+    private Boolean debugScanAcad = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     }
 
     // Deciphers QR code and gets info to display, then sends it to displayInfo
-    private void parseCode(String qrCode)
+    private void handleQrCode(String qrCode)
     {
         String path  = getKeyPrefPath();
 
@@ -94,28 +91,29 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         {
             try
             {
-                int[] codes = decipherQrCode(qrCode);
-                if (codes == null || codes.length < VALID_CODES)
+                ComputerInfoIdentifier identifier = decipherQrCode(qrCode);
+                if (identifier == null)
                 {
                     displayError("INVALID_QR_CODE", "No valid QR code was found");
                 }
 
-                loadWorkbook(path);
-                String[] rawComputerInfo = ExcelParsing.getRawComputerInfo(codes, currentWorkbook);
+                ExcelParsing.loadWorkbook(path);
+
+                String[] rawComputerInfo = ExcelParsing.getRawComputerInfo(identifier);
                 if (rawComputerInfo.length == STRING_ARRAY_ERROR)
                 {
                     displayError(rawComputerInfo[0], rawComputerInfo[1]);
                 }
                 else
                 {
-                    String[] orderedInfo = Organizer.OrderRawComputerInfo(rawComputerInfo);
+                    String[] orderedInfo = Organizer.organize(rawComputerInfo);
                     if (orderedInfo.length == STRING_ARRAY_ERROR)
                     {
                         displayError(orderedInfo[0], orderedInfo[1]);
                     }
                     else
                     {
-                        displayInfo(orderedInfo, codes);
+                        displayInfo(orderedInfo, identifier);
                     }
                 }
             } catch (Exception e)
@@ -141,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             if (qrCode.length() > 0)
             {
                 Log.d("SCAN_RESULT", "qrCode: " + qrCode);
-                parseCode(qrCode);
+                handleQrCode(qrCode);
             }
         }
         else
@@ -150,44 +148,37 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         }
     }
 
-    // Loads the file -> workbook from the given path into a static variable (memory) so it can be used for multiple scans
-    private void loadWorkbook(String path)
-            throws Exception
-    {
-        if (currentWorkbook == null)
-        {
-            InputStream stream = new FileInputStream(path);
-            currentWorkbook = WorkbookFactory.create(stream);
-        }
-    }
-
-    // Parse QR code into an int array: index 0 is the type of PC (admin or academic), index 1 is the rest of the QR code (i.e. the ID code for the pc)
-    private static int[] decipherQrCode(String qrCode)
+    // Parse QR code into an identifier with sheetId (admin or academic) and rowId (i.e. the identifier that should match the identifier in the row the computer is found in)
+    private static ComputerInfoIdentifier decipherQrCode(String qrCode)
     {
         if (qrCode == null || qrCode.length() < 5)
         {
             return null;
         }
-        int[] codes = new int[2];
+        int sheetId = 0;
+        int rowId = 0;
         try
         {
             int temp = Integer.parseInt(qrCode.trim());
-            if (temp < 20000 && temp >= 10000)
+            if (temp < AdminComputerInfo.VALID_CODE_UPPER && temp >= AdminComputerInfo.VALID_CODE_LOWER)
             {
-                codes[0] = Utility.ADMIN_SHEET;
+                sheetId = AdminComputerInfo.SHEET_ID;
             }
-            else if (temp < 60000 && temp >= 50000)
+            else if (temp < AcadComputerInfo.VALID_CODE_UPPER && temp >= AcadComputerInfo.VALID_CODE_LOWER)
             {
-                codes[0] = Utility.ACAD_SHEET;
+                sheetId = AcadComputerInfo.SHEET_ID;
             }
-            codes[1] = temp;
+            else
+            {
+                throw new UnsupportedOperationException("decipherQrCode: Identifier mismatch, code ("+temp+") matches neither Academic (50000 to 59999) nor Administrative (10000 to 19999)");
+            }
+            rowId = temp;
         }
         catch (NumberFormatException e)
         {
             Log.d(e.getClass().getCanonicalName(), "decipherQrCode: " + e.getLocalizedMessage());
-            return null;
         }
-        return codes;
+        return new ComputerInfoIdentifier(rowId, sheetId);
     }
 
     // Load the excel file path from shared preferences
@@ -195,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String path = prefs.getString(KEY_PREF_PATH, "");
-        path = Utility.stripColon(path);
+        path = FileHandling.stripColon(path);
         return path;
     }
 
@@ -205,13 +196,13 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         File excelFile = new File(path);
         try
         {
-            if (Utility.getFileExtension(path).equals(getString(R.string.excel_extension)))
+            if (FileHandling.getFileExtension(path).equals(getString(R.string.excel_extension)))
             {
                 return excelFile;
             }
             else
             {
-                excelFile = Utility.checkFilePaths(excelFile.getParentFile().listFiles(), getString(R.string.excel_extension));
+                excelFile = FileHandling.checkFilePaths(excelFile.getParentFile().listFiles(), getString(R.string.excel_extension));
             }
             if (excelFile != null)
             {
@@ -251,15 +242,17 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     }
 
     // Sends ordered computer info to next activity where it can be displayed
-    private void displayInfo(String[] orderedComputerInfo, int[] codes)
+    private void displayInfo(String[] orderedComputerInfo, ComputerInfoIdentifier identifier)
     {
         Intent intent = null;
-        if (codes[0] == Utility.ADMIN_SHEET)
+        int sheetId = identifier.getSheetId();
+        int rowId = identifier.getRowId();
+        if (sheetId == AdminComputerInfo.SHEET_ID)
         {
             intent = new Intent(this, AdminInfoActivity.class);
 
         }
-        else if (codes[0] == Utility.ACAD_SHEET)
+        else if (sheetId == AcadComputerInfo.SHEET_ID)
         {
             intent = new Intent( this, AcadInfoActivity.class);
         }
@@ -270,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         if (intent != null)
         {
             intent.putExtra(EXTRA_ORDERED_DATA, orderedComputerInfo);
-            intent.putExtra(EXTRA_ID_CODE, codes[1]);
+            intent.putExtra(EXTRA_ID_CODE, rowId);
             startActivity(intent);
         }
     }
@@ -309,6 +302,10 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults)
     {
+        if (grantResults.length > 0)
+        {
+            Log.d("METHOD_START", "requestCode: " +requestCode+ " grantResult (0=granted): "+ grantResults[0] + "onRequestPermissionsResult: " + System.currentTimeMillis());
+        }
         switch(requestCode)
         {
             case PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:

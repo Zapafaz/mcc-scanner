@@ -8,6 +8,13 @@ package edu.mccnh.mccscanner.datastorage;
 
 public class AcadComputerInfo extends ComputerInfo
 {
+    public static final int VALID_CODE_LOWER = 50000;
+    public static final int VALID_CODE_UPPER = 60000;
+    public static final int SHEET_ID = 1;
+    public static final int RAW_SIZE = 19;
+    public static final int ORDERED_SIZE = 14;
+    public static final int[] IGNORED_COLS = new int[]{ 0, 14, 15, 16, 17};
+
     // Ignored columns:
     // Age of the Computers
     // Projector
@@ -41,6 +48,7 @@ public class AcadComputerInfo extends ComputerInfo
     public AcadComputerInfo(String[] orderedAcadData, int id)
     {
         super(id);
+        originalData = orderedAcadData;
         roomArea = orderedAcadData[0];
         numberOfComputers = orderedAcadData[1];
         model = orderedAcadData[2];

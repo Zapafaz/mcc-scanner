@@ -9,6 +9,14 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+
+import java.io.FileInputStream;
+import java.util.ArrayList;
+
+import edu.mccnh.mccscanner.datastorage.AcadComputerInfo;
+import edu.mccnh.mccscanner.datastorage.AdminComputerInfo;
+import edu.mccnh.mccscanner.datastorage.ComputerInfoIdentifier;
 
 /**
  * Created by Adam on 10/1/2017.
@@ -18,45 +26,60 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 public class ExcelParsing
 {
-    private static final int NO_ID_COLUMN = -5;
-    private static final int UNSET_COLUMN_ID = -1;
-    public static final int NO_ID_CODE = -4;
+    private static final String ID_COL_INDICATOR = "\u2611"; // ☑, ballot box with check
+
+    // TODO: implement column ignoring in raw scan by checking for this in header row cells
+    private static final String IGNORED_COL_INDICATOR = "\u2612"; // ☒, ballot box with X
 
     // These are used to store ID column location so each scan doesn't have to relocate it
-    private static int acadIdColumn = UNSET_COLUMN_ID;
-    private static int adminIdColumn = UNSET_COLUMN_ID;
+    private static Cell acadIdCell = null;
+    private static Cell adminIdCell = null;
 
-    // Take id codes and parse workbook to get raw data
-    public static String[] getRawComputerInfo(int[] codes, Workbook workbook)
-            throws NumberFormatException
+    private static Workbook workbook = null;
+
+    // Loads the workbook from the given path into a static variable (memory) so it can be used for multiple scans
+    public static void loadWorkbook(String path)
+        throws Exception
+    {
+        if (workbook == null)
+        {
+            workbook = WorkbookFactory.create(new FileInputStream(path));
+        }
+    }
+
+    // Take identifier and parse current workbook to get raw data -- entry point for this class
+    public static String[] getRawComputerInfo(ComputerInfoIdentifier identifier)
+            throws Exception
     {
         String errorString;
         String errorTag;
         String[] rawInfo;
-        if (codes == null || codes.length < 2)
+        if (identifier == null)
         {
             errorTag = "INVALID_QR_CODE";
-            errorString = "No valid QR code was found";
+            errorString = "getRawComputerInfo: Identifier was null";
             rawInfo = new String[] {errorTag, errorString};
         }
         else
         {
-            if ((codes[0] == Utility.ADMIN_SHEET || codes[0] == Utility.ACAD_SHEET))
+            int rowId = identifier.getRowId();
+            int sheetId = identifier.getSheetId();
+            if ((sheetId == AdminComputerInfo.SHEET_ID || sheetId == AcadComputerInfo.SHEET_ID))
             {
-                if (isValidIdCode(codes[1]))
+                if (isValidIdCode(rowId))
                 {
-                    rawInfo = parse(codes[1], codes[0], workbook);
+                    rawInfo = parse(identifier);
                 }
                 else
                 {
-                    errorString = "ExcelParsing.getRawComputerInfo received invalid PC id format: " + codes[1] + " sheet id: " + codes[0];
+                    errorString = "ExcelParsing.getRawComputerInfo received invalid row id format: " + rowId + " sheet id: " + sheetId;
                     errorTag = "INVALID_ID_CODE";
                     rawInfo = new String[] {errorTag, errorString};
                 }
             }
             else
             {
-                errorString = "ExcelParsing.getRawComputerInfo received invalid sheet id: " + codes[0] + " PC id: " + codes[1];
+                errorString = "ExcelParsing.getRawComputerInfo received invalid sheet id: " + sheetId + " row id: " + rowId;
                 errorTag = "INVALID_SHEET";
                 rawInfo = new String[] {errorTag, errorString};
             }
@@ -68,68 +91,57 @@ public class ExcelParsing
     // It could just get the data by a row ID code but then if the computer in that row is different from what it was when the QR sticker was created, it will be the wrong data
     // e.g. QR code points to row 37, but row 37 now contains data for a different computer than the one scanned
     @SuppressLint("DefaultLocale") // Don't need to care about locale for this method (or really, any of this app), not sure why it thinks I should
-    private static String[] parse(int idCode, int sheetId, Workbook workbook)
-            throws NumberFormatException
+    private static String[] parse(ComputerInfoIdentifier identifier)
+            throws Exception
     {
-        DataFormatter formatter = new DataFormatter();
-        String[] computerData = null;
         Sheet sheet = null;
-        FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
         String errorString;
         String errorTag;
+        int rowId = identifier.getRowId();
+        int sheetId = identifier.getSheetId();
         int idColumn;
-        boolean sheetFound;
+        boolean validSheet;
 
         switch (sheetId)
         {
-            case Utility.ADMIN_SHEET:
-                computerData = new String[Utility.ADMIN_RAW_SIZE];
-                errorString = String.format("ExcelParsing.parse failed to find cell in Admin sheet for idCode: %d", idCode);
+            case AdminComputerInfo.SHEET_ID:
+                sheet = workbook.getSheetAt(AdminComputerInfo.SHEET_ID);
+
+                errorString = String.format("ExcelParsing.parse failed to find cell in Admin sheetId (given: #%d, %s) for rowId: "+ rowId, sheetId, sheet.getSheetName());
                 errorTag = "ADMIN_NOT_FOUND";
-                sheet = workbook.getSheetAt(Utility.ADMIN_SHEET);
-                sheetFound = true;
+                validSheet = true;
                 break;
-            case Utility.ACAD_SHEET:
-                computerData = new String[Utility.ACAD_RAW_SIZE];
-                errorString = String.format("ExcelParsing.parse failed to find cell in Acad sheet for idCode: %d", idCode);
+            case AcadComputerInfo.SHEET_ID:
+                sheet = workbook.getSheetAt(AcadComputerInfo.SHEET_ID);
+
+                errorString = String.format("ExcelParsing.parse failed to find cell in Acad sheetId (given: #%d, %s) for rowId: " + rowId, sheetId, sheet.getSheetName());
                 errorTag = "ACAD_NOT_FOUND";
-                sheet = workbook.getSheetAt(Utility.ACAD_SHEET);
-                sheetFound = true;
+                validSheet = true;
                 break;
             default:
                 errorString = String.format("ExcelParsing.parse failed to find valid sheet for sheetId: %d", sheetId);
                 errorTag = "INVALID_SHEET";
-                sheetFound = false;
+                validSheet = false;
                 break;
         }
-        if (sheetFound)
+        if (validSheet)
         {
-            idColumn = findIdColumn(sheet, sheetId);
-            if (idColumn == NO_ID_COLUMN)
+            Cell idCell = findIdColumnHeader(sheet, sheetId);
+            if (idCell == null)
             {
                 errorTag = "NO_ID_COLUMN";
-                errorString = "Could not find the ID code column (column starting with" + Utility.ID_COL_INDICATOR + " (unicode code point: U+2611)) in sheet:" + sheet.getSheetName();
+                errorString = "Could not find the row ID column (column starting with " + ID_COL_INDICATOR + " (Unicode code point: U+2611)) in sheet: " + sheet.getSheetName();
             }
             else
             {
+                idColumn = idCell.getColumnIndex();
+
                 // Iterates over every row rather than starting at the ID/header row, just in case - should only be a few extra rows, anyway...
                 for (Row row : sheet)
                 {
-                    Cell idCell = row.getCell(idColumn);
-                    if (idCodeMatchesCellCode(idCode, idCell))
+                    if (doesCellMatch(row.getCell(idColumn), rowId))
                     {
-                        // TODO: There's probably a cleaner way to iterate over each cell in a row...
-                        int i = 0;
-                        for (Cell cell : row)
-                        {
-                            computerData[i] = formatter.formatCellValue(cell, evaluator);
-                            i++;
-                            if (i >= computerData.length)
-                            {
-                                Utility.debugWriteArrayToLog("EXCEL_PARSER", computerData);
-                                return computerData;
-                            }
-                        }
+                        return getAllCells(row, idColumn);
                     }
                 }
             }
@@ -137,52 +149,71 @@ public class ExcelParsing
         return new String[] { errorTag, errorString };
     }
 
+    // Get all cells as strings up to a given maximum column.
+    private static String[] getAllCells(Row row, int exclusiveMax)
+            throws Exception
+    {
+        FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+        DataFormatter formatter = new DataFormatter();
+        ArrayList<String> data = new ArrayList<>();
+        String temp;
+        for (int i = 0; i < exclusiveMax; i++)
+        {
+            temp = formatter.formatCellValue(row.getCell(i), evaluator);
+            // Change null to empty string just in case
+            if (temp == null)
+            {
+                temp = "";
+            }
+            data.add(temp);
+        }
+        return data.toArray(new String[0]);
+    }
+
     // Finds the ID column by looking for its header, or returns it from memory if it was previously found.
-    private static int findIdColumn(Sheet sheet, int sheetId)
+    private static Cell findIdColumnHeader(Sheet sheet, int sheetId)
     {
         // Return previously found ID column location if it exists
-        if (sheetId == Utility.ADMIN_SHEET && adminIdColumn != UNSET_COLUMN_ID)
+        if (sheetId == AdminComputerInfo.SHEET_ID && adminIdCell != null)
         {
-            return adminIdColumn;
+            return adminIdCell;
         }
-        else if (sheetId == Utility.ACAD_SHEET && acadIdColumn != UNSET_COLUMN_ID)
+        else if (sheetId == AcadComputerInfo.SHEET_ID && acadIdCell != null)
         {
-            return acadIdColumn;
+            return acadIdCell;
         }
 
         for (Row row : sheet)
         {
             for (Cell cell : row)
             {
-                if (isIdColumnHeader(cell))
+                if (doesCellContain(cell, ID_COL_INDICATOR))
                 {
-                    int index = cell.getColumnIndex();
                     // Remember ID column location for future scans
-                    if (sheetId == Utility.ADMIN_SHEET && adminIdColumn == UNSET_COLUMN_ID)
+                    if (sheetId == AdminComputerInfo.SHEET_ID && adminIdCell == null)
                     {
-                        adminIdColumn = index;
+                        adminIdCell = cell;
                     }
-                    else if (sheetId == Utility.ACAD_SHEET && acadIdColumn == UNSET_COLUMN_ID)
+                    else if (sheetId == AcadComputerInfo.SHEET_ID && acadIdCell == null)
                     {
-                        acadIdColumn = index;
+                        acadIdCell = cell;
                     }
-                    return index;
+                    return cell;
                 }
             }
         }
-        return NO_ID_COLUMN;
+        return null;
     }
 
-    // Check if the given cell is the ID column header by checking if it's first character is \u2611 (☑, ballot box with check)
-    @SuppressWarnings("ConstantConditions") // flow analysis is wrong here; String.trim() makes it think val cannot be null but trim() returns null if it's used on String variable that is null.
-    private static boolean isIdColumnHeader(Cell cell)
+    // Check if the given cell contains the given string.
+    @SuppressWarnings("ConstantConditions") // flow analysis is wrong here because it isn't analyzing String.trim(), which can return null.
+    private static boolean doesCellContain(Cell cell, String string)
     {
         DataFormatter formatter = new DataFormatter();
         String val = formatter.formatCellValue(cell).trim();
         if (val != null && val.length() > 0)
         {
-            val = val.substring(0, 1);
-            if (val.equals(Utility.ID_COL_INDICATOR))
+            if (val.startsWith(string) || val.contains(string))
             {
                 return true;
             }
@@ -190,11 +221,12 @@ public class ExcelParsing
         return false;
     }
 
-    // Check if a given ID code matches the code in a given cell.
-    private static boolean idCodeMatchesCellCode(int idCode, Cell cell)
+    // Check if the given integer matches the integer in the given cell.
+    @SuppressWarnings("ConstantConditions") // flow analysis is wrong here because it isn't analyzing String.trim(), which can return null.
+    private static boolean doesCellMatch(Cell cell, int i)
     {
         DataFormatter formatter = new DataFormatter();
-        String cellData = formatter.formatCellValue(cell);
+        String cellData = formatter.formatCellValue(cell).trim();
         int cellCode = -1;
         if (cellData != null && cellData.length() > 0)
         {
@@ -207,12 +239,12 @@ public class ExcelParsing
                 Log.d(e.getClass().getCanonicalName(), e.getLocalizedMessage());
             }
         }
-        return idCode == cellCode;
+        return i == cellCode;
     }
 
     // Check if a given integer matches either ID code format.
     private static boolean isValidIdCode(int idCode)
     {
-        return ((idCode < 20000 && idCode >= 10000) || (idCode < 60000 && idCode >= 50000));
+        return ((idCode < AdminComputerInfo.VALID_CODE_UPPER && idCode >= AdminComputerInfo.VALID_CODE_LOWER) || (idCode < AcadComputerInfo.VALID_CODE_UPPER && idCode >= AcadComputerInfo.VALID_CODE_LOWER));
     }
 }

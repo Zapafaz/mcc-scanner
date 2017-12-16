@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import edu.mccnh.mccscanner.Creator;
+import edu.mccnh.mccscanner.Debugging;
 import edu.mccnh.mccscanner.R;
-import edu.mccnh.mccscanner.Utility;
 import edu.mccnh.mccscanner.datastorage.AdminComputerInfo;
 
 /**
@@ -80,17 +80,17 @@ public class AdminInfoActivity extends AppCompatActivity
         Intent intent = getIntent();
         String[] orderedComputerInfo = intent.getStringArrayExtra(MainActivity.EXTRA_ORDERED_DATA);
         int id = intent.getIntExtra(MainActivity.EXTRA_ID_CODE, 0);
-        if (orderedComputerInfo.length == Utility.ADMIN_ORDERED_SIZE)
+        if (orderedComputerInfo.length == AdminComputerInfo.ORDERED_SIZE)
         {
             infoToDisplay = new AdminComputerInfo(orderedComputerInfo, id);
         }
         else
         {
-            displayError("INVALID_FORMAT", "AdminInfoActivity.onCreate orderedComputerInfo array size does not match either Admin nor Academic");
+            displayError("INVALID_FORMAT", "AdminInfoActivity.onCreate orderedComputerInfo array size does not match Admin size");
         }
         if (infoToDisplay != null)
         {
-            Utility.debugWriteArrayToLog("DISPLAY", orderedComputerInfo);
+            Debugging.write("DISPLAY_ADMIN", orderedComputerInfo);
             lastName.setText(infoToDisplay.getLastName());
             firstName.setText(infoToDisplay.getFirstName());
             department.setText(infoToDisplay.getDepartment());
